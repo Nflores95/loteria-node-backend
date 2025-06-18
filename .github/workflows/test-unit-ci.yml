@@ -30,7 +30,7 @@ jobs:
 
       - name: Test Project
         run: |
-          npm run test:watch
+          npm run test
           npm run test:coverage
 
 #      - name: Upload Build Artifact
