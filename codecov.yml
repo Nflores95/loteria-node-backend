@@ -25,7 +25,7 @@ coverage:
 comment:
   layout: "reach, diff, files"
   behavior: default
-  require_changes: false     # Siempre comenta (incluso si no hubo cambio de cobertura)
+  require_changes: true     # Siempre comenta (incluso si no hubo cambio de cobertura)
 
 github_checks:
   annotations: true          # Muestra comentarios línea a línea en el PR
