@@ -111,4 +111,25 @@ app.get('/api/products/stats', (req, res) => {
   });
 });
 
+app.get('/api/products/stats/v2', (req, res) => {
+  const products = [
+    { id: 1, name: 'Laptop', price: 999.99, category: 'Electronics' },
+    { id: 2, name: 'Phone', price: 599.99, category: 'Electronics' },
+    { id: 3, name: 'Book', price: 19.99, category: 'Education' }
+  ];
+
+  // Función CON cobertura de pruebas
+  const basicStats = getBasicStats(products);
+  
+  // Función SIN cobertura de pruebas
+  const advancedStats = getAdvancedStats(products);
+
+  // Combinar ambos resultados
+  res.json({
+    ...basicStats,
+    ...advancedStats
+  });
+});
+
+
 module.exports = app; 
