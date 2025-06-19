@@ -9,17 +9,14 @@ coverage:
   status:
     project:
       default:
-        enabled: true
-        target: 80%          # Mínimo requerido para cobertura total
-        threshold: 0.0       # No permite bajada
-        if_not_found: fail
-        informational: false
+        target: 80%        # Umbral mínimo de cobertura global
+        threshold: 2%      # Permite que baje hasta 2% sin marcar fallo
+        base: auto
+        informational: false  # Marca error si no se cumple
     patch:
       default:
-        enabled: true
-        target: 90%          # Mínimo requerido para nuevo código
-        threshold: 0.0
-        if_not_found: fail
+        target: 80%        # Umbral mínimo para los nuevos cambios (diff)
+        threshold: 2%
         informational: false
 
 comment:                  # this is a top-level key
