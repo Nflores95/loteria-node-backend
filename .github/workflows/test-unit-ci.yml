@@ -33,8 +33,17 @@ jobs:
           npm run test
           npm run test:coverage
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: ./coverage/lcov.info
+          flags: app
+          name: codecov-coverage
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
+        if: always()
         with:
            name: '${{ github.run_id }}-coverage'
            path: coverage/
