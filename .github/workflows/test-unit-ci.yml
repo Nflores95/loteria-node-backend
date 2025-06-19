@@ -38,6 +38,7 @@ jobs:
         if: always()
         with:
           files: ./coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
           flags: app
           name: codecov-coverage
 
