@@ -54,4 +54,4 @@ jobs:
       - name: Imprimir variables de entorno
         run: |
           echo "Secret VAR: ${{ secrets.SECRET_DEV }}"
-          cho "Environment VAR: ${{ vars.PATH_URL }}"
+          echo "Environment VAR: ${{ vars.PATH_URL }}"
