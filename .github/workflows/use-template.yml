@@ -13,6 +13,4 @@ jobs:
 
       - name: Usar template o action reutilizable
         uses: Nflores95/loteria-devops-resources/.github/actions/helpers/hello-word@main
-        with:
-          comentario: 'Se imprimio el mensaje'
           
