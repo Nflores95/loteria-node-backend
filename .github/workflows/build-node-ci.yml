@@ -37,3 +37,21 @@ jobs:
           path: dist/
           retention-days: 14
 
+  deploy:
+    name: Dummy Deploy
+    needs: build
+    runs-on: ${{ vars.VM_IMAGEN }}
+    environment:
+      name: node-backend-dev
+      url: https://www.google.com
+
+    steps:
+      - name: Descarga artefacto
+        uses: actions/download-artifact@v4
+        with:
+          name:  ${{ github.run_id }}
+
+      - name: Imprimir variables de entorno
+        run: |
+          echo "Secret VAR: ${{ secrets.SECRET_DEV }}"
+          cho "Environment VAR: ${{ vars.PATH_URL }}"
