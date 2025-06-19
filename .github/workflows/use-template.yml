@@ -1,0 +1,15 @@
+name: Usar un Template
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Usar template o action reutilizable
+        uses: Nflores95/loteria-devops-resources/.github/actions/helpers/hello-word@main
