@@ -175,4 +175,121 @@ describe('API Endpoints', () => {
       expect(response.body.category).toBe('Test Category');
     });
   });
+
+  // TESTS PARA LOS NUEVOS ENDPOINTS DE VACACIONES
+  describe('GET /api/vacaciones', () => {
+    test('should return vacaciones list', async () => {
+      const response = await request(app).get('/api/vacaciones');
+      expect(response.statusCode).toBe(200);
+      expect(Array.isArray(response.body)).toBeTruthy();
+      expect(response.body.length).toBe(2);
+      expect(response.body[0]).toHaveProperty('id');
+      expect(response.body[0]).toHaveProperty('userId');
+      expect(response.body[0]).toHaveProperty('startDate');
+      expect(response.body[0]).toHaveProperty('endDate');
+      expect(response.body[0]).toHaveProperty('status');
+    });
+  });
+
+  describe('GET /api/vacaciones/:id', () => {
+    test('should return vacacion when valid ID is provided', async () => {
+      const response = await request(app).get('/api/vacaciones/1');
+      expect(response.statusCode).toBe(200);
+      expect(response.body.id).toBe(1);
+      expect(response.body.userId).toBe(1);
+      expect(response.body.status).toBe('approved');
+    });
+
+    test('should return 404 when vacacion not found', async () => {
+      const response = await request(app).get('/api/vacaciones/999');
+      expect(response.statusCode).toBe(404);
+      expect(response.body.error).toBe('Vacacion not found');
+    });
+
+    test('should handle invalid ID format', async () => {
+      const response = await request(app).get('/api/vacaciones/abc');
+      expect(response.statusCode).toBe(404);
+      expect(response.body.error).toBe('Vacacion not found');
+    });
+  });
+
+  describe('POST /api/vacaciones', () => {
+    test('should create a new vacacion when all data is provided', async () => {
+      const vacacionData = {
+        userId: 1,
+        startDate: '2024-09-01',
+        endDate: '2024-09-10',
+        reason: 'Rest and relaxation'
+      };
+      const response = await request(app)
+        .post('/api/vacaciones')
+        .send(vacacionData);
+      expect(response.statusCode).toBe(201);
+      expect(response.body.userId).toBe(vacacionData.userId);
+      expect(response.body.startDate).toBe(vacacionData.startDate);
+      expect(response.body.endDate).toBe(vacacionData.endDate);
+      expect(response.body.status).toBe('pending');
+      expect(response.body.id).toBeDefined();
+      expect(response.body.createdAt).toBeDefined();
+    });
+
+    test('should return 400 when userId is not provided', async () => {
+      const vacacionData = { startDate: '2024-09-01', endDate: '2024-09-10' };
+      const response = await request(app)
+        .post('/api/vacaciones')
+        .send(vacacionData);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.error).toBe('userId is required');
+    });
+
+    test('should return 400 when startDate is not provided', async () => {
+      const vacacionData = { userId: 1, endDate: '2024-09-10' };
+      const response = await request(app)
+        .post('/api/vacaciones')
+        .send(vacacionData);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.error).toBe('startDate is required');
+    });
+
+    test('should return 400 when endDate is not provided', async () => {
+      const vacacionData = { userId: 1, startDate: '2024-09-01' };
+      const response = await request(app)
+        .post('/api/vacaciones')
+        .send(vacacionData);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.error).toBe('endDate is required');
+    });
+
+    test('should return 400 when startDate is not before endDate', async () => {
+      const vacacionData = { userId: 1, startDate: '2024-09-10', endDate: '2024-09-01' };
+      const response = await request(app)
+        .post('/api/vacaciones')
+        .send(vacacionData);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.error).toBe('startDate must be before endDate');
+    });
+
+    test('should return 400 when startDate equals endDate', async () => {
+      const vacacionData = { userId: 1, startDate: '2024-09-01', endDate: '2024-09-01' };
+      const response = await request(app)
+        .post('/api/vacaciones')
+        .send(vacacionData);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.error).toBe('startDate must be before endDate');
+    });
+
+    test('should trim whitespace from startDate and endDate', async () => {
+      const vacacionData = {
+        userId: 1,
+        startDate: '  2024-09-01  ',
+        endDate: '  2024-09-10  '
+      };
+      const response = await request(app)
+        .post('/api/vacaciones')
+        .send(vacacionData);
+      expect(response.statusCode).toBe(201);
+      expect(response.body.startDate).toBe('2024-09-01');
+      expect(response.body.endDate).toBe('2024-09-10');
+    });
+  });
 }); 
