@@ -73,6 +73,12 @@ Este proyecto está diseñado para ser utilizado con GitHub Actions. Puedes conf
 ISC 
 
 
+JWT_SECRET=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZmFrZS5zaWduYXR1cmU=
+PRIVATE_KEY=-----BEGIN PRIVATE KEY-----
+FAKEKEYDATA1234567890
+-----END PRIVATE KEY-----
+
+
 ACR_LOGIN_SERVER=fakeacr.azurecr.io
 ACR_USERNAME=fakeacruser
 ACR_PASSWORD=fakeacrpassword123
