@@ -90,4 +90,57 @@ app.post('/api/products', (req, res) => {
   res.status(201).json(newProduct);
 });
 
+// Vacaciones endpoints
+const vacaciones = [
+  { id: 1, userId: 1, startDate: '2024-07-01', endDate: '2024-07-15', status: 'approved', reason: 'Summer vacation' },
+  { id: 2, userId: 2, startDate: '2024-08-05', endDate: '2024-08-10', status: 'pending', reason: 'Family trip' }
+];
+
+app.get('/api/vacaciones', (req, res) => {
+  res.json(vacaciones);
+});
+
+app.get('/api/vacaciones/:id', (req, res) => {
+  const vacacionId = parseInt(req.params.id);
+  const vacacion = vacaciones.find(v => v.id === vacacionId);
+
+  if (!vacacion) {
+    return res.status(404).json({ error: 'Vacacion not found' });
+  }
+
+  res.json(vacacion);
+});
+
+app.post('/api/vacaciones', (req, res) => {
+  const { userId, startDate, endDate, reason } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'userId is required' });
+  }
+
+  if (!startDate || startDate.trim() === '') {
+    return res.status(400).json({ error: 'startDate is required' });
+  }
+
+  if (!endDate || endDate.trim() === '') {
+    return res.status(400).json({ error: 'endDate is required' });
+  }
+
+  if (new Date(startDate) >= new Date(endDate)) {
+    return res.status(400).json({ error: 'startDate must be before endDate' });
+  }
+
+  const newVacacion = {
+    id: Date.now(),
+    userId,
+    startDate: startDate.trim(),
+    endDate: endDate.trim(),
+    status: 'pending',
+    reason: reason ? reason.trim() : '',
+    createdAt: new Date()
+  };
+
+  res.status(201).json(newVacacion);
+});
+
 module.exports = app; 
