@@ -71,3 +71,8 @@ Este proyecto está diseñado para ser utilizado con GitHub Actions. Puedes conf
 ## Licencia
 
 ISC 
+
+
+ACR_LOGIN_SERVER=fakeacr.azurecr.io
+ACR_USERNAME=fakeacruser
+ACR_PASSWORD=fakeacrpassword123
